@@ -78,11 +78,11 @@ export function generateSVGVisualization(data) {
   marker.setAttribute('id', 'arrowhead');
   marker.setAttribute('markerWidth', '10');
   marker.setAttribute('markerHeight', '10');
-  marker.setAttribute('refX', '9');
+  marker.setAttribute('refX', '0');
   marker.setAttribute('refY', '3');
   marker.setAttribute('orient', 'auto');
   const polygon = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
-  polygon.setAttribute('points', '0 0, 10 3, 0 6');
+  polygon.setAttribute('points', '10 0, 0 3, 10 6');
   polygon.setAttribute('fill', config.colors.connection);
   marker.appendChild(polygon);
   defs.appendChild(marker);
@@ -332,7 +332,7 @@ function createConnection(x1, y1, x2, y2, color, isShared = false) {
   path.setAttribute('stroke-width', isShared ? 2.5 : 1.5);
   path.setAttribute('fill', 'none');
   path.setAttribute('opacity', isShared ? 0.8 : 0.5);
-  path.setAttribute('marker-end', 'url(#arrowhead)');
+  path.setAttribute('marker-start', 'url(#arrowhead)');
 
   if (isShared) {
     path.setAttribute('stroke-dasharray', '5,5');
