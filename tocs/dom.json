@@ -1,0 +1,151 @@
+{
+  "version": "1.0",
+  "lastModified": "2026-02-26T11:51:19.238Z",
+  "impact": {
+    "id": "impact-1",
+    "statement": "People around the world experience and enjoy a single, unified Web that works consistently across devices, browsers, and platforms, ensuring users can freely choose the tools they want to interact with the Web."
+  },
+  "outcomes": [
+    {
+      "id": "5be9ced3-a4f6-4311-8b08-677e0c881abe",
+      "statement": "Interoperable Web technologies are deployed seamlessly across the globe.",
+      "indicators": [
+        {
+          "id": "20c2c36e-672d-46b4-b6a1-4e34f7cbd2a9",
+          "description": "Differential rate of adoption by content developers of Web technologies across countries (or regions of the globe)"
+        },
+        {
+          "id": "654581b1-8d5b-44d9-a8c8-eb3ca0140cb4",
+          "description": "Differential rate of number/time of digital activities done through the Web vs other platforms across the globe "
+        }
+      ],
+      "outputs": [
+        {
+          "id": "dd2dfb68-bc2a-4885-9c49-8f39db84fb9f",
+          "statement": "Interoperable web technologies: standards, test suites, supporting adoption tooling (e.g. validator, polyfill), reference\nimplementations",
+          "indicators": []
+        },
+        {
+          "id": "91f8a41f-84dd-4171-a84b-54f6bfc11851",
+          "statement": "GAP: regular report on barriers to global adoption of Web technologies ",
+          "indicators": []
+        }
+      ]
+    },
+    {
+      "id": "18389323-7b64-4ac9-af01-8b3b6d524e7d",
+      "statement": " Interoperable Web technologies are deployed seamlessly across hardware and OS boundaries.",
+      "indicators": [
+        {
+          "id": "ae2c3387-1229-4d5e-b410-702ae415da04",
+          "description": "Differential rate of implementation of Web technologies across hardware boundaries (incl form factor, performance profile)"
+        },
+        {
+          "id": "ad79cda9-4d72-4448-a914-306ad1413405",
+          "description": "Differential rate of implementation of Web technologies across OS boundaries"
+        },
+        {
+          "id": "fa2652c1-dc10-4c49-90b1-e57c70de2245",
+          "description": "Differential rate of adoption of content developers of Web technologies across hardware/OS boundaries"
+        },
+        {
+          "id": "8efd72e2-4024-4d3e-9943-45ce4d9d0fff",
+          "description": "Differential rate of number/time of digital activities done through the Web vs other platform on a given hardware profile"
+        },
+        {
+          "id": "abb03c9c-9377-4de0-8535-134946dc9b84",
+          "description": "Differential rate of number/time of digital activities done through the Web vs other platform on a given OS "
+        }
+      ],
+      "outputs": [
+        {
+          "id": "397c1173-7bda-4331-ba58-f8abe18b48ff",
+          "statement": "Interoperable web technologies: standards, test suites, supporting adoption tooling (e.g. validator, polyfill), reference\nimplementations",
+          "indicators": []
+        },
+        {
+          "id": "abcaa737-496a-4d40-a27d-9bbbf544cc26",
+          "statement": "Gap: running test suites across different hardware profile",
+          "indicators": [
+            {
+              "id": "9efb4031-2c05-41ad-b2b2-a0ff53f2a267",
+              "description": ""
+            }
+          ]
+        },
+        {
+          "id": "2803c825-4bff-4169-b097-fc1510bd7256",
+          "statement": "Gap: systematic review of Web technologies across hardware profiles (e.g. low end devices) ",
+          "indicators": []
+        }
+      ]
+    },
+    {
+      "id": "df3c7a45-5f93-4dc8-9d7b-da90f67e1085",
+      "statement": "A rich and interoperable ecosystem of Web user agent\nprovide meaningful choice to end users. ",
+      "indicators": [
+        {
+          "id": "6263771c-7058-4c47-9a42-4b3b01f3d71e",
+          "description": "The number of Web technologies that are implemented interoperably across browsers (“baseline newly available”)"
+        },
+        {
+          "id": "d33ef2bc-32d9-493e-a2d1-f937c677a58d",
+          "description": "The number of content and services on the Web that don’t work well across browsers (proxy: Web Compat?)"
+        },
+        {
+          "id": "0c64750c-e895-466f-b964-c02e7af2a421",
+          "description": "The number of Web user agents available on the market"
+        },
+        {
+          "id": "68cfbfa9-c6ec-418f-bb25-b1702424b629",
+          "description": "The number of Web rendering engines used to consume Web content "
+        }
+      ],
+      "outputs": [
+        {
+          "id": "f00003e6-2c0c-490b-9215-37081c33ecc8",
+          "statement": "Baseline definition and tracking (WebDX, not fully W3C endorsed at the moment)",
+          "indicators": []
+        },
+        {
+          "id": "5f4086c4-da83-4bbc-853f-ed628cd3903b",
+          "statement": "Constantly maintained Web Platform Tests",
+          "indicators": []
+        },
+        {
+          "id": "59232831-1015-4dc0-a939-dd27be1f1149",
+          "statement": "GAP: structural effort on Web engine monoculture risk?",
+          "indicators": []
+        },
+        {
+          "id": "2178b5df-7b6b-489a-990c-5b854fd3b127",
+          "statement": "WPT Interop project (not quite a W3C output at the moment though) ",
+          "indicators": []
+        }
+      ]
+    },
+    {
+      "id": "e5f1316c-921b-416d-a669-b618c6e6a27c",
+      "statement": "Interoperable Web technologies provide a credible alternative to proprietary platforms for content and service providers. ",
+      "indicators": [
+        {
+          "id": "c8b885f6-6548-4f6d-a07f-9df4c2d11aba",
+          "description": "Quantity of content and services that don’t provide any Web experience"
+        },
+        {
+          "id": "ddb4d1c3-009c-429d-88af-a97fc5688d0e",
+          "description": "Quantity of content and services that provide a sub-par Web experience"
+        },
+        {
+          "id": "691f8672-d635-4e17-8c89-cc1f9e003e7d",
+          "description": "Differential time spent on proprietary platforms vs Web"
+        },
+        {
+          "id": "15877fdc-9e83-4de4-8176-efe382cf3b71",
+          "description": "Weighted gap of differences of features provided in proprierty platforms vs Web"
+        }
+      ],
+      "outputs": []
+    }
+  ]
+}

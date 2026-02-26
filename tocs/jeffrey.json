@@ -1,0 +1,52 @@
+{
+  "version": "1.0",
+  "lastModified": "2026-02-26T14:00:00.000Z",
+  "impact": {
+    "id": "impact-1",
+    "statement": "People around the world experience and enjoy a single, unified Web that works consistently across devices, browsers, and platforms, ensuring users can freely choose the tools they want to interact with the Web."
+  },
+  "outcomes": [
+    {
+      "id": "outcome-1",
+      "statement": "Many user agents are available that make meaningfully different choices.",
+      "indicators": [
+        {
+          "id": "indicator-1-1",
+          "description": "There should be a steady or decreasing rate of features that: 1) only work on 1 implementation. 2) work on some but not all implementations. Measured as a fraction of Baseline features."
+        },
+        {
+          "id": "indicator-1-2",
+          "description": "The number of browsers that support Baseline, keep up with security patches, and make noticeably different design choices, stays steady or increases."
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "id": "outcome-4",
+      "statement": "Governments don't restrict access to the Web.",
+      "indicators": [],
+      "outputs": [
+        {
+          "id": "output-4-1",
+          "statement": "The W3C helps governments make good decisions.",
+          "indicators": []
+        }
+      ]
+    },
+    {
+      "id": "outcome-5",
+      "statement": "People can choose to use the Web for digital activity",
+      "indicators": [
+	{
+	  "id": "indicator-5-1",
+	  "description": "An increasing fraction of people’s time on computers is done on the Web"
+	},
+	{
+	  "id": "indicator-5-2",
+	  "description": "If a capability is widely adopted on a non-web platform and it doesn’t conflict with the W3C’s ethical principles, the web gets the capability no more than N years after the non-web platform. Failing that, a WG should have developed a specification for the capability, and at least 1 browser should have shipped it. Ideally this spec is at CR or higher"
+	}
+      ],
+      "outputs": []
+    }
+  ]
+}
