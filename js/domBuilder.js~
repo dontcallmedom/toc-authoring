@@ -1,0 +1,330 @@
+/**
+ * DOM Builder for dynamic content generation
+ * Uses semantic HTML elements first, ARIA only as supplement
+ */
+
+export class DomBuilder {
+  constructor(dataModel, accessibility) {
+    this.dataModel = dataModel;
+    this.accessibility = accessibility;
+  }
+
+  /**
+   * Render an outcome card
+   * @param {string} outcomeId
+   * @returns {HTMLElement}
+   */
+  renderOutcome(outcomeId) {
+    const outcome = this.dataModel.getOutcome(outcomeId);
+    if (!outcome) return null;
+
+    // Calculate outcome number (1-based index)
+    const outcomeIndex = this.dataModel.data.outcomes.findIndex(o => o.id === outcomeId);
+    const outcomeNumber = outcomeIndex + 1;
+
+    // Create article element for outcome card
+    const article = document.createElement('article');
+    article.className = 'outcome-card';
+    article.dataset.outcomeId = outcomeId;
+
+    // Card header with delete button
+    const header = document.createElement('div');
+    header.className = 'card-header';
+
+    const numberLabel = document.createElement('div');
+    numberLabel.className = 'outcome-number';
+    numberLabel.textContent = `Outcome ${outcomeNumber}`;
+
+    const deleteBtn = document.createElement('button');
+    deleteBtn.type = 'button';
+    deleteBtn.className = 'delete-btn';
+    deleteBtn.dataset.action = 'delete-outcome';
+    deleteBtn.dataset.outcomeId = outcomeId;
+    deleteBtn.setAttribute('aria-label', `Delete outcome ${outcomeNumber}`);
+    deleteBtn.innerHTML = '<span aria-hidden="true">×</span>';
+
+    header.appendChild(numberLabel);
+    header.appendChild(deleteBtn);
+
+    // Card body
+    const body = document.createElement('div');
+    body.className = 'card-body';
+
+    // Outcome statement
+    const statementGroup = this.createFormGroup(
+      `outcome-statement-${outcomeId}`,
+      'Outcome Statement',
+      'textarea',
+      outcome.statement,
+      'Describe the desired change or result',
+      { rows: 3, 'data-outcome-id': outcomeId, class: 'outcome-statement' }
+    );
+    body.appendChild(statementGroup);
+
+    // Indicators fieldset
+    const indicatorsFieldset = this.createIndicatorsFieldset(outcomeId, outcome.indicators, 'outcome');
+    body.appendChild(indicatorsFieldset);
+
+    // Outputs fieldset
+    const outputsFieldset = this.createOutputsFieldset(outcomeId, outcome.outputs);
+    body.appendChild(outputsFieldset);
+
+    article.appendChild(header);
+    article.appendChild(body);
+
+    return article;
+  }
+
+  /**
+   * Create a form group with label and input/textarea
+   * @param {string} id
+   * @param {string} labelText
+   * @param {string} elementType - 'input' or 'textarea'
+   * @param {string} value
+   * @param {string} hint
+   * @param {Object} attributes - Additional attributes for the element
+   * @returns {HTMLElement}
+   */
+  createFormGroup(id, labelText, elementType, value, hint, attributes = {}) {
+    const group = document.createElement('div');
+    group.className = 'form-group';
+
+    const label = document.createElement('label');
+    label.setAttribute('for', id);
+    label.textContent = labelText;
+
+    const element = document.createElement(elementType);
+    element.id = id;
+    element.value = value;
+
+    // Apply additional attributes
+    Object.entries(attributes).forEach(([key, val]) => {
+      if (key === 'class') {
+        element.className = val;
+      } else {
+        element.setAttribute(key, val);
+      }
+    });
+
+    group.appendChild(label);
+    group.appendChild(element);
+
+    if (hint) {
+      const hintId = `${id}-hint`;
+      const hintP = document.createElement('p');
+      hintP.id = hintId;
+      hintP.className = 'hint';
+      hintP.textContent = hint;
+      element.setAttribute('aria-describedby', hintId);
+      group.appendChild(hintP);
+    }
+
+    return group;
+  }
+
+  /**
+   * Create indicators fieldset
+   * @param {string} parentId - outcome or output ID
+   * @param {Array} indicators
+   * @param {string} parentType - 'outcome' or 'output'
+   * @param {string} outputId - only if parentType is 'output'
+   * @returns {HTMLElement}
+   */
+  createIndicatorsFieldset(parentId, indicators, parentType, outputId = null) {
+    const fieldset = document.createElement('fieldset');
+    fieldset.className = 'indicators-section';
+
+    const legend = document.createElement('legend');
+    legend.textContent = parentType === 'outcome' ? 'Outcome Indicators' : 'Output Indicators';
+    fieldset.appendChild(legend);
+
+    // Create list for indicators
+    const ul = document.createElement('ul');
+    ul.className = 'indicators-list';
+    ul.setAttribute('aria-label', `Indicators for ${parentType}`);
+
+    indicators.forEach(indicator => {
+      const li = this.createIndicatorItem(parentId, indicator, parentType, outputId);
+      ul.appendChild(li);
+    });
+
+    fieldset.appendChild(ul);
+
+    // Add indicator button
+    const addBtn = document.createElement('button');
+    addBtn.type = 'button';
+    addBtn.className = 'add-btn';
+    addBtn.dataset.action = parentType === 'outcome' ? 'add-outcome-indicator' : 'add-output-indicator';
+    addBtn.dataset.outcomeId = parentType === 'outcome' ? parentId : outputId;
+    if (parentType === 'output') {
+      addBtn.dataset.outputId = parentId;
+    }
+    addBtn.innerHTML = '<span aria-hidden="true">+</span> Add Indicator';
+
+    const parentIndex = parentType === 'outcome'
+      ? this.dataModel.data.outcomes.findIndex(o => o.id === parentId) + 1
+      : null;
+    addBtn.setAttribute('aria-label',
+      parentType === 'outcome'
+        ? `Add indicator to outcome ${parentIndex}`
+        : 'Add indicator to output'
+    );
+
+    fieldset.appendChild(addBtn);
+
+    return fieldset;
+  }
+
+  /**
+   * Create an indicator list item
+   * @param {string} parentId
+   * @param {Object} indicator
+   * @param {string} parentType
+   * @param {string} outputId
+   * @returns {HTMLElement}
+   */
+  createIndicatorItem(parentId, indicator, parentType, outputId = null) {
+    const li = document.createElement('li');
+    li.className = 'indicator-item';
+    li.dataset.indicatorId = indicator.id;
+
+    const inputId = `indicator-${indicator.id}`;
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.id = inputId;
+    input.value = indicator.description;
+    input.placeholder = 'Describe the indicator...';
+    input.dataset.indicatorId = indicator.id;
+    input.dataset.outcomeId = parentType === 'outcome' ? parentId : outputId;
+    if (parentType === 'output') {
+      input.dataset.outputId = parentId;
+    }
+    input.setAttribute('aria-label', 'Indicator description');
+
+    const deleteBtn = document.createElement('button');
+    deleteBtn.type = 'button';
+    deleteBtn.className = 'delete-btn';
+    deleteBtn.dataset.action = parentType === 'outcome' ? 'delete-outcome-indicator' : 'delete-output-indicator';
+    deleteBtn.dataset.indicatorId = indicator.id;
+    deleteBtn.dataset.outcomeId = parentType === 'outcome' ? parentId : outputId;
+    if (parentType === 'output') {
+      deleteBtn.dataset.outputId = parentId;
+    }
+    deleteBtn.setAttribute('aria-label', 'Delete indicator');
+    deleteBtn.innerHTML = '<span aria-hidden="true">×</span>';
+
+    li.appendChild(input);
+    li.appendChild(deleteBtn);
+
+    return li;
+  }
+
+  /**
+   * Create outputs fieldset
+   * @param {string} outcomeId
+   * @param {Array} outputs
+   * @returns {HTMLElement}
+   */
+  createOutputsFieldset(outcomeId, outputs) {
+    const fieldset = document.createElement('fieldset');
+    fieldset.className = 'outputs-section';
+
+    const legend = document.createElement('legend');
+    legend.textContent = 'Outputs';
+    fieldset.appendChild(legend);
+
+    // Create container for outputs
+    const container = document.createElement('div');
+    container.className = 'outputs-list';
+    container.setAttribute('aria-label', 'Outputs list');
+
+    outputs.forEach(output => {
+      const outputCard = this.createOutputCard(outcomeId, output);
+      container.appendChild(outputCard);
+    });
+
+    fieldset.appendChild(container);
+
+    // Add output button
+    const addBtn = document.createElement('button');
+    addBtn.type = 'button';
+    addBtn.className = 'add-btn';
+    addBtn.dataset.action = 'add-output';
+    addBtn.dataset.outcomeId = outcomeId;
+    addBtn.innerHTML = '<span aria-hidden="true">+</span> Add Output';
+
+    const outcomeIndex = this.dataModel.data.outcomes.findIndex(o => o.id === outcomeId) + 1;
+    addBtn.setAttribute('aria-label', `Add output to outcome ${outcomeIndex}`);
+
+    fieldset.appendChild(addBtn);
+
+    return fieldset;
+  }
+
+  /**
+   * Create an output card
+   * @param {string} outcomeId
+   * @param {Object} output
+   * @returns {HTMLElement}
+   */
+  createOutputCard(outcomeId, output) {
+    const article = document.createElement('article');
+    article.className = 'output-card';
+    article.dataset.outputId = output.id;
+    article.dataset.outcomeId = outcomeId;
+
+    // Output header with delete button
+    const header = document.createElement('div');
+    header.className = 'card-header';
+
+    const deleteBtn = document.createElement('button');
+    deleteBtn.type = 'button';
+    deleteBtn.className = 'delete-btn';
+    deleteBtn.dataset.action = 'delete-output';
+    deleteBtn.dataset.outputId = output.id;
+    deleteBtn.dataset.outcomeId = outcomeId;
+    deleteBtn.setAttribute('aria-label', 'Delete output');
+    deleteBtn.innerHTML = '<span aria-hidden="true">×</span>';
+
+    header.appendChild(deleteBtn);
+
+    // Output statement
+    const statementGroup = this.createFormGroup(
+      `output-statement-${output.id}`,
+      'Output Statement',
+      'textarea',
+      output.statement,
+      'Describe the output or activity',
+      {
+        rows: 2,
+        'data-output-id': output.id,
+        'data-outcome-id': outcomeId,
+        class: 'output-statement'
+      }
+    );
+
+    // Output indicators
+    const indicatorsFieldset = this.createIndicatorsFieldset(output.id, output.indicators, 'output', outcomeId);
+
+    article.appendChild(header);
+    article.appendChild(statementGroup);
+    article.appendChild(indicatorsFieldset);
+
+    return article;
+  }
+
+  /**
+   * Re-render all outcomes (full refresh)
+   */
+  renderAllOutcomes() {
+    const container = document.getElementById('outcomes-container');
+    container.innerHTML = '';
+
+    this.dataModel.data.outcomes.forEach(outcome => {
+      const element = this.renderOutcome(outcome.id);
+      if (element) {
+        container.appendChild(element);
+      }
+    });
+  }
+}

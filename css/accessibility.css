@@ -1,0 +1,100 @@
+/* Accessibility-focused styles for WCAG 2.1 AA compliance */
+
+/* Screen reader only - hide visually but keep in DOM for screen readers */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Skip link - hidden until focused */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: #000;
+  color: #fff;
+  padding: 8px 16px;
+  text-decoration: none;
+  z-index: 100;
+  font-weight: 600;
+}
+
+.skip-link:focus {
+  top: 0;
+}
+
+/* Focus indicators - WCAG 2.1 AA requires 3:1 contrast with adjacent colors */
+*:focus {
+  outline: 3px solid #0066CC;
+  outline-offset: 2px;
+}
+
+button:focus,
+a:focus {
+  outline: 3px solid #0066CC;
+  outline-offset: 2px;
+}
+
+/* Ensure focus is visible on form elements */
+input:focus,
+textarea:focus,
+select:focus {
+  outline: 3px solid #0066CC;
+  outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  *:focus {
+    outline-width: 4px;
+  }
+}
+
+/* Reduced motion support - respect user preferences */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Save indicator - visible when active */
+.save-indicator {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  font-size: 0.875rem;
+  color: #28a745;
+  margin-top: 0.5rem;
+  font-weight: 500;
+}
+
+.save-indicator.visible {
+  opacity: 1;
+}
+
+/* Ensure sufficient color contrast for error states */
+.error-message {
+  color: #d32f2f;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+[aria-invalid="true"] {
+  border-color: #d32f2f;
+}
+
+/* Visually hidden but announced by screen readers */
+[role="status"][aria-live="polite"] {
+  /* Already hidden by sr-only class in HTML */
+}
